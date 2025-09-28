@@ -1,0 +1,597 @@
+/* ProductDetails.css - Dark Mode Finance App */
+
+.product-detail-container {
+  background-color: #0f1419;
+  color: #e6e8eb;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.product-detail {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* Loading and Error States */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  font-size: 1.2rem;
+  color: #9ca3af;
+  background: linear-gradient(135deg, #1a202c, #2d3748);
+  border-radius: 16px;
+  position: relative;
+}
+
+.loading::after {
+  content: '';
+  width: 24px;
+  height: 24px;
+  margin-left: 15px;
+  border: 3px solid #374151;
+  border-top: 3px solid #00d4ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.error-message {
+  background: linear-gradient(135deg, #1f1b2e, #2d1b2e);
+  border: 1px solid #dc2626;
+  color: #fca5a5;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+/* Product Header */
+.product-header-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  background: linear-gradient(145deg, #1a202c, #2d3748);
+  padding: 2.5rem;
+  border-radius: 20px;
+  border: 1px solid #374151;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.product-header-detail::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #00d4ff, #5865f2, #10b981);
+}
+
+.product-info-main h1 {
+  color: #ffffff;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+  background: linear-gradient(135deg, #ffffff, #cbd5e1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.product-symbol-large {
+  color: #9ca3af;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.product-category-badge {
+  background: linear-gradient(135deg, #00d4ff, #0ea5e9);
+  color: #ffffff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: inline-block;
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+}
+
+.product-price-main {
+  text-align: right;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 2px solid rgba(16, 185, 129, 0.2);
+  min-width: 200px;
+}
+
+.current-price {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.current-price .currency {
+  color: #10b981;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.current-price .amount {
+  color: #10b981;
+  font-size: 2.5rem;
+  font-weight: 900;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  text-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+
+.per-unit {
+  color: #6b7280;
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Product Details Grid */
+.product-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+}
+
+.product-info-section,
+.chart-section {
+  background: linear-gradient(145deg, #1a202c, #2d3748);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid #374151;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.product-info-section h3,
+.chart-section h3 {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid rgba(88, 101, 242, 0.3);
+  position: relative;
+}
+
+.product-info-section h3::after,
+.chart-section h3::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(90deg, #5865f2, #00d4ff);
+}
+
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info-item label {
+  color: #9ca3af;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-item span,
+.info-item p {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.risk-level {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.risk-level.low {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.risk-level.medium {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.risk-level.high {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.description p {
+  line-height: 1.7;
+  color: #cbd5e1;
+  margin: 0;
+}
+
+/* Chart Section */
+.chart-container {
+  height: 300px;
+  background: rgba(15, 20, 25, 0.5);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid #374151;
+}
+
+/* Investment Section */
+.investment-section {
+  background: linear-gradient(145deg, #1e293b, #334155);
+  padding: 2.5rem;
+  border-radius: 16px;
+  border: 1px solid #475569;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.investment-section h3 {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 2rem 0;
+  text-align: center;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.investment-section h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 2px;
+}
+
+.investment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form-group label {
+  color: #e2e8f0;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.form-group input {
+  background: rgba(15, 20, 25, 0.8);
+  border: 2px solid #374151;
+  color: #ffffff;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+  background: rgba(15, 20, 25, 1);
+}
+
+.form-group small {
+  color: #9ca3af;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.investment-summary {
+  background: rgba(15, 20, 25, 0.6);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #374151;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.investment-summary p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.investment-summary strong {
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+/* Product Actions */
+.product-actions-detail {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  min-width: 180px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+
+.btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
+}
+
+.btn-primary:disabled {
+  background: #374151;
+  color: #6b7280;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #00d4ff;
+  border: 2px solid #00d4ff;
+}
+
+.btn-outline:hover {
+  background: rgba(0, 212, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
+}
+
+.auth-prompt {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(88, 101, 242, 0.1);
+  border: 2px dashed #5865f2;
+  border-radius: 16px;
+  width: 100%;
+}
+
+.auth-prompt p {
+  color: #cbd5e1;
+  font-size: 1.1rem;
+  margin: 0 0 1.5rem 0;
+}
+
+/* Animations */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .product-details-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-container {
+    height: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-detail-container {
+    padding: 1rem;
+  }
+
+  .product-header-detail {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .product-info-main h1 {
+    font-size: 2rem;
+  }
+
+  .current-price .amount {
+    font-size: 2rem;
+  }
+
+  .product-price-main {
+    text-align: center;
+    min-width: auto;
+    width: 100%;
+  }
+
+  .product-actions-detail {
+    flex-direction: column;
+  }
+
+  .btn {
+    min-width: auto;
+  }
+
+  .investment-section {
+    padding: 2rem 1.5rem;
+  }
+
+  .chart-container {
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-detail-container {
+    padding: 0.5rem;
+  }
+
+  .product-info-main h1 {
+    font-size: 1.5rem;
+  }
+
+  .product-symbol-large {
+    font-size: 1rem;
+  }
+
+  .current-price .amount {
+    font-size: 1.5rem;
+  }
+
+  .investment-section,
+  .product-info-section,
+  .chart-section {
+    padding: 1.5rem;
+  }
+
+  .investment-summary {
+    padding: 1rem;
+  }
+
+  .investment-summary p {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .form-group input,
+  .loading::after,
+  .btn::before {
+    transition: none;
+    animation: none;
+  }
+  
+  .btn:hover,
+  .btn-primary:hover {
+    transform: none;
+  }
+}
+
+/* Focus states */
+.btn:focus,
+.form-group input:focus {
+  outline: 3px solid #00d4ff;
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .product-detail-container {
+    background: #000000;
+    color: #ffffff;
+  }
+  
+  .product-header-detail,
+  .product-info-section,
+  .chart-section,
+  .investment-section {
+    background: #000000;
+    border-color: #ffffff;
+  }
+  
+  .form-group input {
+    background: #000000;
+    border-color: #ffffff;
+  }
+}

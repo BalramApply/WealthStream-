@@ -1,0 +1,213 @@
+/* ProductList.css - Dark Mode Finance App */
+
+.products-container {
+  background-color: #0f1419;
+  color: #e6e8eb;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.products-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem 0;
+}
+
+.products-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #00d4ff, #5865f2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.products-header p {
+  font-size: 1.1rem;
+  color: #9ca3af;
+  font-weight: 400;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.filter-section {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-section label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #d1d5db;
+}
+
+.category-filter {
+  background-color: #1f2937;
+  border: 2px solid #374151;
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  min-width: 180px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.category-filter:hover {
+  border-color: #5865f2;
+  background-color: #252d3d;
+}
+
+.category-filter:focus {
+  outline: none;
+  border-color: #00d4ff;
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+.category-filter option {
+  background-color: #1f2937;
+  color: #ffffff;
+  padding: 0.5rem;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  font-size: 1.2rem;
+  color: #9ca3af;
+  background-color: #0f1419;
+}
+
+.loading::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  border: 2px solid #374151;
+  border-top: 2px solid #00d4ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  background-color: #1f1b2e;
+  border: 1px solid #dc2626;
+  color: #fca5a5;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 500px;
+  font-weight: 500;
+}
+
+.no-products {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  background-color: #1a202c;
+  border: 2px dashed #374151;
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+
+.no-products p {
+  font-size: 1.1rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .products-container {
+    padding: 1rem;
+  }
+
+  .products-header h1 {
+    font-size: 2rem;
+  }
+
+  .products-header p {
+    font-size: 1rem;
+  }
+
+  .filter-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .category-filter {
+    width: 100%;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-container {
+    padding: 0.5rem;
+  }
+
+  .products-header {
+    margin-bottom: 2rem;
+    padding: 1rem 0;
+  }
+
+  .products-header h1 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .loading::after {
+    animation: none;
+  }
+  
+  .category-filter {
+    transition: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .products-container {
+    background-color: #000000;
+    color: #ffffff;
+  }
+  
+  .category-filter {
+    border-color: #ffffff;
+    background-color: #000000;
+  }
+  
+  .error-message {
+    background-color: #000000;
+    border-color: #ff0000;
+    color: #ff6b6b;
+  }
+}
