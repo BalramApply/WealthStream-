@@ -13,4 +13,9 @@ router.post('/buy', auth, transactionController.buyProduct);
 // @access  Private
 router.get('/', auth, transactionController.getTransactions);
 
+// @route   POST /api/transactions/sell
+// @desc    Sell a product
+// @access  Private
+router.post('/sell', auth, transactionController.sellProduct);
+
 module.exports = router;

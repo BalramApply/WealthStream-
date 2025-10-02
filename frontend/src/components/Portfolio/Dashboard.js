@@ -265,10 +265,15 @@ const Dashboard = () => {
             <div className="transactions-list">
               {recentTransactions.map((transaction) => (
                 <div key={transaction._id} className="transaction-item">
+
+                  
                   <div className="transaction-info">
+
                     <strong>{transaction.product.name}</strong>
-                    <span className="transaction-type">{transaction.type.toUpperCase()}</span>
-                  </div>
+                    
+                    <span className={`transaction-type transaction-item ${transaction.type === 'buy' ? 'buy' : 'sell'}`}>{transaction.type.toUpperCase()}</span>
+                    </div>
+                  
                   <div className="transaction-details">
                     <span>{transaction.units} units @ ₹{transaction.pricePerUnit}</span>
                     <span className="transaction-amount">₹{transaction.totalAmount.toLocaleString('en-IN')}</span>
@@ -277,6 +282,7 @@ const Dashboard = () => {
                     {new Date(transaction.createdAt).toLocaleDateString('en-IN')}
                   </div>
                 </div>
+                
               ))}
               <Link to="/transactions" className="view-all-link">View All Transactions</Link>
             </div>

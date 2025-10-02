@@ -1,0 +1,573 @@
+/* Watchlist.css - Dark Mode Finance App */
+
+.watchlist-container {
+  background-color: #0f1419;
+  color: #e6e8eb;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Loading and Error States */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  font-size: 1.3rem;
+  color: #9ca3af;
+  background: linear-gradient(135deg, #1a202c, #2d3748);
+  border-radius: 20px;
+  margin: 2rem auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.loading::after {
+  content: '';
+  width: 30px;
+  height: 30px;
+  margin-left: 20px;
+  border: 4px solid #374151;
+  border-top: 4px solid #5865f2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.error-message {
+  background: linear-gradient(135deg, #1f1b2e, #2d1b2e);
+  border: 2px solid #dc2626;
+  color: #fca5a5;
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 2rem auto;
+  box-shadow: 0 8px 32px rgba(220, 38, 38, 0.2);
+}
+
+/* Header */
+.watchlist-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem 0;
+}
+
+.watchlist-header h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(135deg, #5865f2, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+}
+
+.watchlist-header h1::after {
+  content: '👁️';
+  position: absolute;
+  right: -60px;
+  top: 0;
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 8px rgba(88, 101, 242, 0.4));
+}
+
+.watchlist-header p {
+  font-size: 1.2rem;
+  color: #9ca3af;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Watchlist Grid */
+.watchlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.watchlist-card {
+  background: linear-gradient(145deg, #1a202c, #2d3748);
+  border: 1px solid #374151;
+  border-radius: 20px;
+  padding: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.watchlist-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #5865f2, #00d4ff, #10b981);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.watchlist-card:hover {
+  transform: translateY(-5px);
+  border-color: #5865f2;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.watchlist-card:hover::before {
+  opacity: 1;
+}
+
+/* Card Header */
+.watchlist-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  position: relative;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.product-category {
+  background: rgba(88, 101, 242, 0.15);
+  color: #5865f2;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(88, 101, 242, 0.3);
+}
+
+.risk-badge {
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.remove-btn {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.remove-btn:hover {
+  background: rgba(239, 68, 68, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Card Content */
+.watchlist-content {
+  margin-bottom: 1.5rem;
+}
+
+.product-name {
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-symbol {
+  color: #9ca3af;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.product-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 12px;
+}
+
+.currency {
+  color: #10b981;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.amount {
+  color: #10b981;
+  font-size: 1.6rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  text-shadow: 0 1px 2px rgba(16, 185, 129, 0.3);
+}
+
+.unit {
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-left: auto;
+}
+
+.key-metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: rgba(88, 101, 242, 0.1);
+  border: 1px solid rgba(88, 101, 242, 0.2);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.metric-name {
+  color: #d1d5db;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.metric-value {
+  color: #5865f2;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.product-description {
+  color: #9ca3af;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Card Actions */
+.watchlist-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  flex: 1;
+  min-width: 130px;
+  padding: 0.875rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #d1d5db;
+  border: 2px solid #374151;
+}
+
+.btn-outline:hover {
+  background: rgba(55, 65, 81, 0.3);
+  border-color: #6b7280;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(145deg, #1a202c, #2d3748);
+  border-radius: 24px;
+  border: 2px dashed #374151;
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.7;
+  animation: gentle-float 3s ease-in-out infinite;
+}
+
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.empty-state h3 {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.empty-state p {
+  color: #9ca3af;
+  font-size: 1.1rem;
+  margin: 0 0 2rem 0;
+  line-height: 1.6;
+}
+
+/* Watchlist Info */
+.watchlist-info {
+  background: linear-gradient(145deg, #1a202c, #2d3748);
+  padding: 2.5rem;
+  border-radius: 20px;
+  border: 1px solid #374151;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  margin-top: 3rem;
+}
+
+.watchlist-info h3 {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid rgba(88, 101, 242, 0.3);
+  position: relative;
+}
+
+.watchlist-info h3::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #5865f2, #00d4ff);
+}
+
+.watchlist-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.watchlist-info li {
+  color: #cbd5e1;
+  font-size: 1rem;
+  line-height: 1.6;
+  position: relative;
+  padding-left: 2rem;
+}
+
+.watchlist-info li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #10b981;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Animations */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .watchlist-container {
+    padding: 1rem;
+  }
+
+  .watchlist-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .watchlist-header h1::after {
+    right: -45px;
+    font-size: 1.5rem;
+  }
+
+  .watchlist-header p {
+    font-size: 1rem;
+  }
+
+  .watchlist-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .watchlist-card {
+    padding: 1.25rem;
+  }
+
+  .watchlist-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .remove-btn {
+    position: static;
+    align-self: flex-end;
+    margin-top: -2rem;
+  }
+
+  .watchlist-actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    min-width: auto;
+  }
+
+  .empty-state {
+    padding: 3rem 1.5rem;
+  }
+
+  .watchlist-info {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .watchlist-container {
+    padding: 0.5rem;
+  }
+
+  .watchlist-header h1 {
+    font-size: 2rem;
+  }
+
+  .watchlist-header h1::after {
+    right: -35px;
+    font-size: 1.25rem;
+  }
+
+  .watchlist-card {
+    padding: 1rem;
+  }
+
+  .product-name {
+    font-size: 1.1rem;
+  }
+
+  .amount {
+    font-size: 1.4rem;
+  }
+
+  .empty-state {
+    padding: 2rem 1rem;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+  }
+
+  .watchlist-info {
+    padding: 1.5rem;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .watchlist-card,
+  .btn,
+  .remove-btn,
+  .empty-icon,
+  .loading::after {
+    transition: none;
+    animation: none;
+  }
+  
+  .watchlist-card:hover,
+  .btn:hover {
+    transform: none;
+  }
+}
+
+/* Focus states for accessibility */
+.btn:focus,
+.remove-btn:focus {
+  outline: 3px solid #00d4ff;
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .watchlist-container {
+    background: #000000;
+    color: #ffffff;
+  }
+  
+  .watchlist-card,
+  .empty-state,
+  .watchlist-info {
+    background: #000000;
+    border-color: #ffffff;
+  }
+  
+  .product-name {
+    color: #ffffff;
+  }
+  
+  .btn-outline {
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+}

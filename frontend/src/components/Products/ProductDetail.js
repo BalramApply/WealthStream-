@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Line } from 'react-chartjs-2';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,10 +10,10 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
-import { useAuth } from '../../context/AuthContext';
-import api from '../../services/api';
-import './ProductDetails.css';
+} from "chart.js";
+import { useAuth } from "../../context/AuthContext";
+import api from "../../services/api";
+import "./ProductDetails.css";
 
 ChartJS.register(
   CategoryScale,
@@ -31,8 +31,8 @@ const ProductDetail = () => {
   const { user, isAuthenticated } = useAuth();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [investmentAmount, setInvestmentAmount] = useState('');
+  const [error, setError] = useState("");
+  const [investmentAmount, setInvestmentAmount] = useState("");
   const [units, setUnits] = useState(0);
   const [purchasing, setPurchasing] = useState(false);
   const [isInWatchlist, setIsInWatchlist] = useState(false);
@@ -46,7 +46,7 @@ const ProductDetail = () => {
 
   // Fixed useEffect for calculating units
   useEffect(() => {
-    if (product && investmentAmount && investmentAmount !== '') {
+    if (product && investmentAmount && investmentAmount !== "") {
       const amount = parseFloat(investmentAmount);
       if (!isNaN(amount) && amount > 0) {
         const calculatedUnits = Math.floor(amount / product.pricePerUnit);
@@ -65,54 +65,87 @@ const ProductDetail = () => {
       setProduct(response.data.product);
       setLoading(false);
     } catch (error) {
-      setError('Failed to fetch product details');
+      setError("Failed to fetch product details");
       setLoading(false);
     }
   };
 
   const checkWatchlistStatus = async () => {
     try {
-      const response = await api.get('/portfolio/watchlist');
+      const response = await api.get("/portfolio/watchlist");
       const watchlist = response.data.watchlist;
-      setIsInWatchlist(watchlist.some(item => item._id === id));
+      setIsInWatchlist(watchlist.some((item) => item._id === id));
     } catch (error) {
-      console.error('Error checking watchlist status:', error);
+      console.error("Error checking watchlist status:", error);
     }
   };
 
   const handlePurchase = async () => {
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     if (!user.isKYCCompleted) {
-      navigate('/kyc');
+      navigate("/kyc");
       return;
     }
 
     if (units <= 0) {
-      alert('Please enter a valid investment amount');
+      alert("Please enter a valid investment amount");
       return;
     }
 
     const totalAmount = units * product.pricePerUnit;
     if (totalAmount > user.wallet.balance) {
-      alert('Insufficient balance in your wallet');
+      alert("Insufficient balance in your wallet");
       return;
     }
 
     setPurchasing(true);
     try {
-      await api.post('/transactions/buy', {
+      await api.post("/transactions/buy", {
         productId: product._id,
-        units
+        units,
       });
-      
-      alert('Purchase successful!');
-      navigate('/dashboard');
+
+      alert("Purchase successful!");
+      navigate("/dashboard");
     } catch (error) {
-      alert(error.response?.data?.message || 'Purchase failed');
+      alert(error.response?.data?.message || "Purchase failed");
+    } finally {
+      setPurchasing(false);
+    }
+  };
+
+  // Inside ProductDetail component, add this function:
+  const handleSell = async () => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
+
+    if (!user.isKYCCompleted) {
+      navigate("/kyc");
+      return;
+    }
+
+    if (units <= 0) {
+      alert("Please enter a valid investment amount");
+      return;
+    }
+
+    setPurchasing(true);
+    try {
+      await api.post("/transactions/sell", {
+        productId: product._id,
+        units,
+      });
+
+      alert("Sell successful!");
+      navigate("/dashboard");
+    } catch (error) {
+      alert(error.response?.data?.message || "Sell failed");
     } finally {
       setPurchasing(false);
     }
@@ -120,7 +153,7 @@ const ProductDetail = () => {
 
   const handleWatchlistToggle = async () => {
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
@@ -128,14 +161,14 @@ const ProductDetail = () => {
       if (isInWatchlist) {
         await api.delete(`/portfolio/watchlist/${product._id}`);
         setIsInWatchlist(false);
-        alert('Removed from watchlist');
+        alert("Removed from watchlist");
       } else {
-        await api.post('/portfolio/watchlist', { productId: product._id });
+        await api.post("/portfolio/watchlist", { productId: product._id });
         setIsInWatchlist(true);
-        alert('Added to watchlist');
+        alert("Added to watchlist");
       }
     } catch (error) {
-      alert(error.response?.data?.message || 'Action failed');
+      alert(error.response?.data?.message || "Action failed");
     }
   };
 
@@ -143,7 +176,7 @@ const ProductDetail = () => {
   const handleInvestmentAmountChange = (e) => {
     const value = e.target.value;
     // Allow empty string, numbers, and decimal points
-    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+    if (value === "" || /^\d*\.?\d*$/.test(value)) {
       setInvestmentAmount(value);
     }
   };
@@ -152,16 +185,20 @@ const ProductDetail = () => {
   const getChartData = () => {
     if (!product?.historicalData) return null;
 
-    const sortedData = [...product.historicalData].sort((a, b) => new Date(a.date) - new Date(b.date));
-    
+    const sortedData = [...product.historicalData].sort(
+      (a, b) => new Date(a.date) - new Date(b.date)
+    );
+
     return {
-      labels: sortedData.map(data => new Date(data.date).toLocaleDateString('en-IN')),
+      labels: sortedData.map((data) =>
+        new Date(data.date).toLocaleDateString("en-IN")
+      ),
       datasets: [
         {
-          label: 'Price (₹)',
-          data: sortedData.map(data => data.price),
-          borderColor: '#007bff',
-          backgroundColor: 'rgba(0, 123, 255, 0.1)',
+          label: "Price (₹)",
+          data: sortedData.map((data) => data.price),
+          borderColor: "#007bff",
+          backgroundColor: "rgba(0, 123, 255, 0.1)",
           borderWidth: 2,
           fill: true,
         },
@@ -174,11 +211,11 @@ const ProductDetail = () => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
       },
       title: {
         display: true,
-        text: 'Price History',
+        text: "Price History",
       },
     },
     scales: {
@@ -214,14 +251,18 @@ const ProductDetail = () => {
             <h1>{product.name}</h1>
             <p className="product-symbol-large">{product.symbol}</p>
             <div className="product-category-badge">
-              {product.category.replace('_', ' ').toUpperCase()}
+              {product.category.replace("_", " ").toUpperCase()}
             </div>
           </div>
-          
+
           <div className="product-price-main">
             <div className="current-price">
               <span className="currency">₹</span>
-              <span className="amount">{product.pricePerUnit.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+              <span className="amount">
+                {product.pricePerUnit.toLocaleString("en-IN", {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
             </div>
             <p className="per-unit">per unit</p>
           </div>
@@ -237,16 +278,18 @@ const ProductDetail = () => {
                   {product.riskLevel?.toUpperCase()}
                 </span>
               </div>
-              
+
               {product.keyMetric && (
                 <div className="info-item">
                   <label>{product.keyMetric.name}:</label>
                   <span>
-                    {product.keyMetric.name === 'Yield' ? `${product.keyMetric.value}%` : product.keyMetric.value}
+                    {product.keyMetric.name === "Yield"
+                      ? `${product.keyMetric.value}%`
+                      : product.keyMetric.value}
                   </span>
                 </div>
               )}
-              
+
               {product.description && (
                 <div className="info-item description">
                   <label>Description:</label>
@@ -279,21 +322,39 @@ const ProductDetail = () => {
                   onChange={handleInvestmentAmountChange}
                   placeholder="Enter amount to invest"
                 />
-                <small>Minimum investment: ₹{product.pricePerUnit.toFixed(2)} (1 unit)</small>
+                <small>
+                  Minimum investment: ₹{product.pricePerUnit.toFixed(2)} (1
+                  unit)
+                </small>
               </div>
-              
+
               <div className="investment-summary">
-                <p><strong>Units to purchase:</strong> {units}</p>
-                <p><strong>Total cost:</strong> ₹{totalCost.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
+                <p>
+                  <strong>Units to purchase:</strong> {units}
+                </p>
+                <p>
+                  <strong>Total cost:</strong> ₹
+                  {totalCost.toLocaleString("en-IN", {
+                    minimumFractionDigits: 2,
+                  })}
+                </p>
                 {user && (
-                  <p><strong>Remaining balance:</strong> 
-                    <span style={{ color: remainingBalance < 0 ? '#dc3545' : '#28a745' }}>
-                      ₹{remainingBalance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                  <p>
+                    <strong>Remaining balance:</strong>
+                    <span
+                      style={{
+                        color: remainingBalance < 0 ? "#dc3545" : "#28a745",
+                      }}
+                    >
+                      ₹
+                      {remainingBalance.toLocaleString("en-IN", {
+                        minimumFractionDigits: 2,
+                      })}
                     </span>
                   </p>
                 )}
                 {remainingBalance < 0 && (
-                  <p style={{ color: '#dc3545', fontSize: '14px' }}>
+                  <p style={{ color: "#dc3545", fontSize: "14px" }}>
                     <strong>⚠️ Insufficient balance!</strong>
                   </p>
                 )}
@@ -307,25 +368,44 @@ const ProductDetail = () => {
             <>
               <button
                 onClick={handleWatchlistToggle}
-                className={`btn ${isInWatchlist ? 'btn-outline' : 'btn-secondary'}`}
+                className={`btn ${
+                  isInWatchlist ? "btn-outline" : "btn-secondary"
+                }`}
                 disabled={purchasing}
               >
-                {isInWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist'}
+                {isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
               </button>
-              
+
               <button
                 onClick={handlePurchase}
-                disabled={!investmentAmount || units <= 0 || purchasing || remainingBalance < 0}
+                disabled={
+                  !investmentAmount ||
+                  units <= 0 ||
+                  purchasing ||
+                  remainingBalance < 0
+                }
                 className="btn btn-primary"
               >
-                {purchasing ? 'Processing...' : `Buy ${units} Unit${units !== 1 ? 's' : ''}`}
+                {purchasing && units > 0
+                  ? "Processing..."
+                  : `Buy ${units} Unit${units !== 1 ? "s" : ""}`}
+              </button>
+
+              <button
+                onClick={handleSell}
+                disabled={!investmentAmount || units <= 0 || purchasing}
+                className="btn btn-danger"
+              >
+                {purchasing && units > 0
+                  ? "Processing..."
+                  : `Sell ${units} Unit${units !== 1 ? "s" : ""}`}
               </button>
             </>
           ) : (
             <div className="auth-prompt">
               <p>Please log in to invest in this product</p>
               <button
-                onClick={() => navigate('/login')}
+                onClick={() => navigate("/login")}
                 className="btn btn-primary"
               >
                 Log In

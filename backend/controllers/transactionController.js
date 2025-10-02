@@ -93,3 +93,76 @@ exports.getTransactions = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
+
+// Sell Product
+exports.sellProduct = async (req, res) => {
+  try {
+    const { productId, units } = req.body;
+    const userId = req.user.userId;
+
+    // Get product details
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    const totalAmount = units * product.pricePerUnit;
+
+    // Find portfolio
+    let portfolio = await Portfolio.findOne({ user: userId });
+    if (!portfolio) {
+      return res.status(400).json({ message: 'No portfolio found' });
+    }
+
+    // Check existing holding
+    const holding = portfolio.holdings.find(
+      h => h.product.toString() === productId
+    );
+    if (!holding || holding.units < units) {
+      return res.status(400).json({ message: 'Not enough units to sell' });
+    }
+
+    // Create transaction
+    const transaction = new Transaction({
+      user: userId,
+      product: productId,
+      type: 'sell',
+      units,
+      pricePerUnit: product.pricePerUnit,
+      totalAmount
+    });
+    await transaction.save();
+
+    // Update holding
+    holding.units -= units;
+    holding.totalInvested = holding.units * holding.avgBuyPrice;
+
+    // Remove holding if units reach 0
+    if (holding.units === 0) {
+      portfolio.holdings = portfolio.holdings.filter(
+        h => h.product.toString() !== productId
+      );
+    }
+
+    // Update portfolio totals
+    portfolio.totalInvestment = portfolio.holdings.reduce(
+      (sum, h) => sum + h.totalInvested,
+      0
+    );
+    await portfolio.save();
+
+    // Update user wallet (credit sale amount)
+    const user = await User.findById(userId);
+    user.wallet.balance += totalAmount;
+    await user.save();
+
+    res.json({
+      message: 'Sell successful',
+      transaction: await transaction.populate('product'),
+      updatedBalance: user.wallet.balance
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
